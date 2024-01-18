@@ -1,13 +1,13 @@
 """
 Author: Marcos Sanson
-Year: 2023
+Date: May 29, 2023 - November 18, 2023
 Project Title: PROYECTO DE INFORMACIÓN METEOROLÓGICA
 
 Overview:
-This application allows users to process meteorological data and create graphs
-based on selected CSV and ODS files. It provides features for dark mode toggling,
-language switching between English and Spanish, file browsing, ODS file creation,
-and graph generation for a specific year.
+This application enables users to process meteorological data and generate graphs
+from selected CSV and ODS files. It includes features for toggling dark mode,
+switching between English and Spanish, file browsing, ODS file creation, and graph
+generation for a specific year.
 
 Dependencies:
 - pandas
@@ -22,20 +22,21 @@ Usage:
 Note: Ensure that the required dependencies are installed before running the script.
 """
 
+
 import tkinter as tk
 from tkinter import filedialog, ttk
 import calendar
 import locale
 import pandas as pd
-import pyexcel
-import pyexcel_io
 import pyexcel_ods3 as ods
 import numpy as np
 import matplotlib.pyplot as plt
+import webbrowser
 
 
 def reorganize_ods(input_file, output_file):
-    """Reorganize data from a CSV file and save the result to a new ODS file.
+    """
+    Reorganize data from a CSV file and save the result to a new ODS file.
 
     Args:
         input_file (str): The path to the input CSV file.
@@ -74,8 +75,7 @@ def reorganize_ods(input_file, output_file):
         lambda x: np.mean(x[x != ''] != '-9999'))
 
     # Reorganize the data
-    df_reorganized = pd.pivot_table(df, values=data_column, index='Year',
-                                     columns=pd.to_datetime(df[date_column]).dt.month)
+    df_reorganized = pd.pivot_table(df, values=data_column, index='Year', columns=pd.to_datetime(df[date_column]).dt.month)
     df_reorganized = df_reorganized.rename_axis(None, axis=1)
 
     # Add labels in the first row with the names of the months
@@ -115,7 +115,8 @@ def reorganize_ods(input_file, output_file):
 
 
 def create_graph(input_file_path, output_file_path, year):
-    """Create and display a bar graph based on reorganized data for a specific year.
+    """
+    Create and display a bar graph based on reorganized data for a specific year.
 
     Args:
         input_file_path (str): The path to the input CSV file.
@@ -196,6 +197,7 @@ def create_graph(input_file_path, output_file_path, year):
         print(f"Error: {e}")
         print("Please select a valid year present in the data.")
 
+
 LIGHT_STYLE = {
     "bg": "white",
     "fg": "black",
@@ -211,8 +213,11 @@ DARK_STYLE = {
 }
 
 DEFAULT_BG_COLOR = "white"
+
+
 def toggle_style(dark_mode):
-    """Toggle the GUI style between dark mode and light mode.
+    """
+    Toggle the GUI style between dark mode and light mode.
 
     This function adjusts the Tkinter root window's palette to switch between dark mode and light mode.
     It sets background colors and other style attributes based on the provided `dark_mode` flag.
@@ -228,9 +233,12 @@ def toggle_style(dark_mode):
 
 
 class MeteorologicalApp:
-    """GUI application/blueprint for meteorological data processing and graph creation."""
+    """
+    GUI application/blueprint for meteorological data processing and graph creation.
+    """
     def __init__(self, master):
-        """Initialize the MeteorologicalApp.
+        """
+        Initialize the MeteorologicalApp.
 
         Args:
             master (Tk): The Tkinter master window.
@@ -268,16 +276,19 @@ class MeteorologicalApp:
         self.current_language = 'english'  # Default language
         self.dark_mode = False  # Initialize dark mode state
 
-        # English content
+        # English content https://www.meteogalicia.gal/observacion/estacionshistorico/historico.action?idEst=19039&request_locale=es
         self.english_content = {
             'title': "Meteorological Data Application",
             'dark_mode_button': "Toggle Dark Mode",
-            'language_button': "Cambiar Idioma\n "
+            'language_button': "Cambiar Idioma\n"
                                "a Español/Castellano",
             'instructions': "Instructions:\n"
-                            "1. Select a CSV input file (resultadoCSV_Columnas).\n"
-                            "2. Click 'Create ODS File' to save the reorganized data into a readable spreadsheet.\n"
-                            "3. Click 'Create Graph' to generate a graph using the ODS file.",
+                            "1. Go to this link: https://www.meteogalicia.gal/observacion/estacionshistorico/historico.action?idEst=19039&request_locale=es\n"
+                            "2. Select 'Variables mensuales', then choose a variable, then choose 'Fecha inicial:' and 'Fecha final:', then click 'CONSULTAR'.\n"
+                            "3. Click 'Resultados en formato CSV en columnas' to download the CSV file in the proper format.\n"
+                            "4. Select the CSV input file (resultadoCSV_Columnas).\n"                            
+                            "5. Click 'Create ODS File' to save the reorganized data into a readable spreadsheet.\n"
+                            "6. Enter a year and click 'Create Graph' to generate a graph using the ODS file.",
             'create_ods_section': "Create an ODS File (Spreadsheet File With Data):",
             'select_csv_label': "Select an Input CSV File:",
             'browse_button': "Browse",
@@ -288,7 +299,7 @@ class MeteorologicalApp:
             'selected_ods_label': "Selected ODS Input File (this file will be used to generate a graph): ",
             'enter_year_label': "Enter Year:",
             'create_graph_button': "Create Graph",
-            'graph_information': "Graph Information:\n"
+            'graph_information': "*Graph Information*:\n"
                                  "The generated graph represents meteorological data for the selected year.\n"
                                  "You can customize the appearance of the graph using the matplotlib interface.\n"
                                  "To save the graph as an image file (e.g., PNG, JPEG), you can use the 'Save'\n"
@@ -297,6 +308,15 @@ class MeteorologicalApp:
                                  "graph as an image, close it, then create a new graph of a different year.",
             'message_label': "Message",
             'author_label': "Developed by Marcos Sanson - 2023",
+            'link_button': "Link to MeteoGalicia\n"
+                           "Website",
+            'error_select_input_file': "Error - Please select an input CSV file.",
+            'error_select_ods_file': "Error - Please select an input ODS file.",
+            'error_ods_not_found': "Error - ODS file not found. Please create an ODS file first.",
+            'error_enter_valid_year': "Error - Please enter a valid year.",
+            'error_year_not_found': "Error - Year not found in the data:",
+            'ods_created': "ODS file successfully created",
+            'graph_created': "Graph successfully created",
         }
 
         # Spanish content
@@ -306,9 +326,12 @@ class MeteorologicalApp:
             'language_button': "Switch Language\n"
                                "to English",
             'instructions': "Instrucciones:\n"
-                            "1. Seleccione un archivo CSV de entrada (resultadoCSV_Columnas).\n"
-                            "2. Haga clic en 'Crear archivo ODS' para guardar los datos reorganizados en un formato legible.\n"
-                            "3. Haga clic en 'Crear gráfica' para crear un gráfico usando el archivo ODS.",
+                            "1. Abra este enlace: https://www.meteogalicia.gal/observacion/estacionshistorico/historico.action?idEst=19039&request_locale=es\n"
+                            "2. Seleccione 'Variables mensuales', elija una variable, luego seleccione 'Fecha inicial:' y 'Fecha final:', y haga clic en 'CONSULTAR'.\n"
+                            "3. Haga clic en 'Resultados en formato CSV en columnas' para descargar el archivo CSV en el formato adecuado.\n"
+                            "4. Seleccione el archivo CSV de entrada (resultadoCSV_Columnas).\n"
+                            "5. Haga clic en 'Crear archivo ODS' para guardar los datos reorganizados en un formato legible.\n"
+                            "6. Introduzca un año y haga clic en 'Crear gráfica' para generar un gráfico usando el archivo ODS.",
             'create_ods_section': "Crear un archivo ODS (archivo en un formato legible):",
             'select_csv_label': "Seleccione un archivo CSV de entrada:",
             'browse_button': "Buscar",
@@ -316,10 +339,10 @@ class MeteorologicalApp:
             'create_ods_button': "Crear archivo ODS",
             'create_graph_section': "Crear una gráfica:",
             'select_ods_label': "Seleccione un archivo ODS de entrada (para crear una gráfica):",
-            'selected_ods_label': "Archivo ODS de entrada seleccionado (este archivo se usará para generar una gráfica): N/A",
-            'enter_year_label': "Ingresa el año:",
+            'selected_ods_label': "Archivo ODS de entrada seleccionado (este archivo se usará para generar una gráfica): ",
+            'enter_year_label': "Introduzca el año:",
             'create_graph_button': "Crear gráfica",
-            'graph_information': "Información de la gráfica:\n"
+            'graph_information': "*Información de la gráfica*:\n"
                                  "La gráfica generada representa datos meteorológicos para el año seleccionado.\n"
                                  "Puede personalizar la apariencia de la gráfica usando la interfaz de matplotlib.\n"
                                  "Para guardar la gráfica como un archivo de imagen (por ejemplo, PNG, JPEG), puede usar\n"
@@ -328,18 +351,40 @@ class MeteorologicalApp:
                                  "imagen, cerrarla y luego crear una nueva gráfica de un año diferente.",
             'message_label': "Mensaje",
             'author_label': "Desarrollado por Marcos Sanson - 2023",
+            'link_button': "Enlace al Sitio\n"
+                           "de MeteoGalicia",
+            'error_select_input_file': "Error - Por favor, seleccione un archivo CSV de entrada.",
+            'error_select_ods_file': "Error - Por favor, seleccione un archivo ODS de entrada.",
+            'error_ods_not_found': "Error: Archivo ODS no encontrado. Por favor, cree un archivo ODS primero.",
+            'error_enter_valid_year': "Error: Por favor, introduzca un año válido.",
+            'error_year_not_found': "Error: Año no encontrado en los datos:",
+            'ods_created': "Archivo ODS creado correctamente",
+            'graph_created': "Gráfica creada correctamente",
         }
-
-        # Add a label for displaying me (the author) and year of application development
-        self.author_label = tk.Label(master, text=self.get_text('author_label'), font=("Helvetica", 10))
-        self.author_label.pack(side='right', anchor='se', padx=10, pady=10)
-
-        master.title(self.get_text('title'))
-        master.geometry("1250x700")
 
         # Add a dark mode toggle button
         self.dark_mode_button = ttk.Button(master, text=self.get_text('dark_mode_button'), command=self.toggle_dark_mode)
-        self.dark_mode_button.pack(side='right', anchor='nw', padx=10, pady=10)
+        self.dark_mode_button.place(relx=1.0, anchor='ne', x=-10, y=10)
+
+        # Add a label for displaying me (the author) and year of application development
+        self.author_label = tk.Label(master, text=self.get_text('author_label'), font=("Helvetica", 10))
+        self.author_label.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
+
+        master.title(self.get_text('title'))
+
+        # Calculate screen width and height
+        screen_width = master.winfo_screenwidth()
+        screen_height = master.winfo_screenheight()
+
+        # Set the window size (you can adjust this as needed)
+        window_width = 1250
+        window_height = 750
+
+        # Calculate the x and y position for the window to be centered at the top
+        x_position = (screen_width - window_width) // 2
+        y_position = 0  # Adjusted to be at the top
+
+        master.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
         # Add a language switch button
         self.language_button = ttk.Button(master, text=self.get_text('language_button'), command=self.switch_language)
@@ -387,6 +432,7 @@ class MeteorologicalApp:
 
         self.year_entry = tk.Entry(master)
         self.year_entry.pack(anchor='w', pady=2, padx=10)
+        self.year_entry.bind('<Return>', lambda event: self.create_gui_graph())
 
         self.create_graph_button = tk.Button(master, text=self.get_text('create_graph_button'), command=self.create_gui_graph)
         self.create_graph_button.pack(anchor='w', pady=10, padx=10)
@@ -405,15 +451,44 @@ class MeteorologicalApp:
         self.info_label = tk.Label(master, text=self.get_text('graph_information'), anchor='w', justify='left', font=("Helvetica", 12))
         self.info_label.pack(anchor='w', pady=10)
 
+        # Add a button to open the link
+        self.link_button = tk.Button(master, text=self.get_text('link_button'), command=self.open_link)
+        self.link_button.place(relx=0.0, rely=0.0, anchor='nw', x=10, y=60)
+
+    def open_link(self):
+        """
+        Open the link mentioned in step 1 of instructions.
+
+        This function opens a predefined link in the default web browser.
+
+        Returns:
+            None
+        """
+        link = "https://www.meteogalicia.gal/observacion/estacionshistorico/historico.action?idEst=19039&request_locale=es"
+        webbrowser.open(link)
+
     def toggle_dark_mode(self):
-        """Toggle dark mode and update the UI."""
+        """
+        Toggle dark mode and update the UI.
+
+        This function toggles the dark mode and updates the UI elements accordingly.
+
+        Returns:
+            None
+        """
         # Toggle dark mode and update the UI
         self.dark_mode = not self.dark_mode
         self.update_dark_mode()
 
     def update_dark_mode(self):
-        """Update UI elements based on dark mode state."""
-        # Update UI elements based on dark mode state
+        """
+        Update UI elements based on dark mode state.
+
+        This function adjusts UI elements such as colors based on the current dark mode state.
+
+        Returns:
+            None
+        """
         if self.dark_mode:
             # Dark mode settings
             style = {'background': '#2d2d2d', 'foreground': 'white'}
@@ -425,7 +500,14 @@ class MeteorologicalApp:
         self.master.tk_setPalette(**style)
 
     def switch_language(self):
-        """Toggle between English and Spanish and update the UI."""
+        """
+        Toggle between English and Spanish and update the UI.
+
+        This function toggles between English and Spanish languages and updates the UI accordingly.
+
+        Returns:
+            None
+        """
         # Toggle between English and Spanish
         if self.current_language == 'english':
             self.current_language = 'spanish'
@@ -436,9 +518,17 @@ class MeteorologicalApp:
         self.update_language()
 
     def update_language(self):
-        """Update UI elements based on the current language."""
+        """
+        Update UI elements based on the current language.
+
+        This function updates UI elements, such as labels and buttons, based on the current language.
+
+        Returns:
+            None
+        """
         self.title_label.config(text=self.get_text('title'))
         self.dark_mode_button.config(text=self.get_text('dark_mode_button'))
+        self.link_button.config(text=self.get_text('link_button'))
         self.language_button.config(text=self.get_text('language_button'))
         self.instruction_label.config(text=self.get_text('instructions'))
         self.label_create_ods.config(text=self.get_text('create_ods_section'))
@@ -456,7 +546,8 @@ class MeteorologicalApp:
         self.author_label.config(text=self.get_text('author_label'))
 
     def get_text(self, key):
-        """Get text based on the current language and key.
+        """
+        Get text based on the current language and key.
 
         Args:
             key (str): The key for the desired text.
@@ -471,23 +562,44 @@ class MeteorologicalApp:
             return self.spanish_content.get(key, f'{key}')
 
     def browse_input(self):
-        """Open a file dialog to select an input CSV file."""
+        """
+        Open a file dialog to select an input CSV file.
+
+        This function opens a file dialog for the user to select an input CSV file and updates the UI accordingly.
+
+        Returns:
+            None
+        """
         self.input_file = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
         # Update the input file label
         self.input_file_label.config(text=f"{self.get_text('selected_csv_label')}: {self.input_file}")
 
     def browse_output(self):
-        """Open a file dialog to select an output ODS file for graph creation."""
+        """
+        Open a file dialog to select an output ODS file for graph creation.
+
+        This function opens a file dialog for the user to select an output ODS file and updates the UI accordingly.
+
+        Returns:
+            None
+        """
         self.output_file = filedialog.asksaveasfilename(defaultextension=".ods", filetypes=[("ODS files", "*.ods")])
         # Update the output file label
         self.output_file_label.config(text=f"{self.get_text('selected_ods_label')}: {self.output_file}")
 
     def create_ods(self):
-        """Create an ODS file based on the selected input CSV file."""
+        """
+        Create an ODS file based on the selected input CSV file.
+
+        This function processes the selected input CSV file and prompts the user to save a new ODS file.
+
+        Returns:
+            None
+        """
         input_file = getattr(self, "input_file", None)
 
         if not input_file:
-            self.show_message(f"Error: {self.get_text('select_input_file')}", "red")
+            self.show_message(self.get_text('error_select_input_file'), "red")
             return
 
         # Automatically prompt the user to save a new ODS file
@@ -506,30 +618,37 @@ class MeteorologicalApp:
         self.show_message(self.get_text('ods_created'), "green")
 
     def create_gui_graph(self):
-        """Create a graph based on the selected input CSV and ODS files."""
+        """
+         Create a graph based on the selected input CSV and ODS files.
+
+         This function processes the selected input CSV and ODS files and generates a graph based on user input.
+
+         Returns:
+             None
+         """
         input_file = getattr(self, "input_file", None)
         output_file = self.output_ods_file  # Use the stored path
 
         if not input_file:
-            self.show_message(f"Error: {self.get_text('select_ods_file')}", "red")
+            self.show_message(self.get_text('error_select_ods_file'), "red")
             return
 
         if not output_file:
-            self.show_message(f"Error: {self.get_text('ods_not_found')}", "red")
+            self.show_message(self.get_text('error_ods_not_found'), "red")
             return
 
         # Check if the year is a valid integer
         try:
             year = int(self.year_entry.get())
         except ValueError:
-            self.show_message(f"Error: {self.get_text('enter_valid_year')}", "red")
+            self.show_message(self.get_text('error_enter_valid_year'), "red")
             return
 
         df_reorganized = reorganize_ods(input_file, output_file)
 
         # Check if the selected year is in the DataFrame
         if year not in df_reorganized.index:
-            self.show_message(f"Error: {self.get_text('year_not_found')} {year}", "red")
+            self.show_message(f"{self.get_text('error_year_not_found')} {year}", "red")
             return
 
         # Continue with the script execution
@@ -537,11 +656,15 @@ class MeteorologicalApp:
         self.show_message(self.get_text('graph_created'), "green")
 
     def show_message(self, message, color):
-        """Display a message in the UI.
+        """
+        Display a message in the UI.
 
         Args:
             message (str): The message to be displayed.
             color (str): The color of the message text.
+
+        Returns:
+            None
         """
         # Temporarily forget the message label to prevent shifting
         self.message_label.pack_forget()
@@ -552,11 +675,14 @@ class MeteorologicalApp:
         # Re-display the message label
         self.message_label.pack(side='left', anchor='sw', padx=10, pady=10)
 
+
 # Create the main application window
 root = tk.Tk()
 
+
 # Create an instance of the MeteorologicalApp class
 app = MeteorologicalApp(root)
+
 
 # Start the Tkinter event loop
 root.mainloop()

@@ -1,32 +1,114 @@
 # MeteoGalicia-Application
 
-# Data Conversion Tool with GUI
-
 ## Overview
 
-This project is a user-friendly data conversion tool that simplifies the process of converting data from one format to another. It consists of a Graphical User Interface (GUI) and a powerful data conversion script, making it accessible to users with varying levels of technical expertise.
+This application processes meteorological data (from 2007 to present) from [MeteoGalicia](https://www.meteogalicia.gal/web/observacion/rede-meteoroloxica/historico), a regional meteorological agency in Galicia, Spain. MeteoGalicia provides weather forecasts, climate data, and environmental monitoring for the region. It also offers historical records of various meteorological variables such as temperature, precipitation, solar radiation, and wind speed.
+
+The application allows users to convert, analyze, and visualize historical weather data efficiently. It includes a **user-friendly GUI** for easy interaction and **data conversion scripts** to transform CSV files into ODS spreadsheets. Users can also generate graphs based on meteorological trends, making it a valuable tool for researchers, analysts, and weather enthusiasts working with historical climate data.
+
+
+### Recent Changes  
+As of **2025**, MeteoGalicia has updated its website and **changed the format of its CSV data output**. **Currently, this application does not work with the new CSV format** but remains functional with older CSV files.
 
 ## Features
 
-- **User-Friendly GUI:** The graphical interface provides an intuitive way to interact with the tool. You can select input files, specify conversion options, and initiate the conversion process with ease.
+- **User-Friendly GUI:** The graphical interface allows users to browse and select input files, convert data, and generate graphs effortlessly.
+- **Data Conversion:** Converts **CSV files** into human-readable **ODS spreadsheets** by reorganizing and processing meteorological data.
+- **Graph Generation:** Users can visualize **yearly meteorological trends** in an easy-to-read bar chart.
+- **Dark Mode & Language Switching:** Toggle between light/dark mode and switch between **English** and **Spanish**.
+- **Standalone Executable Available:** No setup required; just **run the `.exe` file** (see below).
 
-- **Data Conversion Script:** At the core of the tool is a Python script designed to perform specific data operations. It can take data from one format (e.g., CSV) and transform it into another (e.g., ODS) with various manipulations and calculations.
+### GUI Preview
+### English Mode: 
+Light Mode | Dark Mode  
+:--:|:--:  
+![English Light Mode](Example_Data/English_GUI_Light_Mode.png) | ![English Dark Mode](Example_Data/English_GUI_Dark_Mode.png)  
 
-- **Efficiency:** This tool is intended to simplify complex data tasks. Whether you need to reorganize data, calculate statistics, or apply transformations, it streamlines the process and saves you time and effort.
+### Spanish Mode:  
+Light Mode | Dark Mode  
+:--:|:--:  
+![Spanish Light Mode](Example_Data/Spanish_GUI_Light_Mode.png) | ![Spanish Dark Mode](Example_Data/Spanish_GUI_Dark_Mode.png)  
 
-## Usage
+## Installation & Usage
 
-- Clone the repository to your local machine.
+### **Option 1: Run the Standalone Executable (Recommended)**
+- Download the executable **`Aplicación - Proyecto de Información Meteorológica.exe`** from the repository.
+- **Ensure the `_internal` folder is in the same directory** (included in the GitHub repo).
+- **Run the `.exe` file**, and the GUI will launch.
 
-- Run the application to open the GUI.
+### **Option 2: Run the Python Script**
+If you prefer to run the script manually:
 
-- Select your input file, specify conversion options, and start the conversion process.
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/yourusername/MeteoGalicia-Application.git
+   cd MeteoGalicia-Application
+   ```
 
-- The tool will perform the data conversion based on your selections.
+2. **Install Dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## How to Run
+3. **Run the Application:**
+   ```bash
+   python gui.py
+   ```
 
-To run the application, make sure you have Python and the necessary libraries installed. You can launch the GUI using the following commands:
+## How to Use
 
-```bash
-python gui_application.py
+1. **Obtain a CSV File** (from older MeteoGalicia data):
+   - Visit [MeteoGalicia](https://www.meteogalicia.gal/web/observacion/rede-meteoroloxica/historico).
+   - Select **"Variables mensuales"**, choose a variable, and specify a date range.
+   - Click **"CONSULTAR"** and then download **"Resultados en formato CSV en columnas"**.
+   - This CSV file is your **input file**.
+
+2. **Convert the CSV to ODS:**
+   - Open the application.
+   - Select the **CSV file** as the input.
+   - Click **"Create ODS File"** to generate a processed spreadsheet.
+
+#### Example ODS Conversion:  
+| ODS Output Example |  
+|:--:|  
+| ![ODS Output Example](Example_Data/ODS_Output_Example_3.png) |
+
+
+3. **Generate a Graph:**
+   - Enter a **year** and click **"Create Graph"** to visualize meteorological trends.
+
+#### Example Graph Output:  
+![Graph Example](Example_Data/Example_Figure_1.png)  
+
+## Example Outputs
+
+The following images showcase different examples of how the application processes files and generates meteorological graphs.
+
+| Example 1 | Example 2 |  
+|:--:|:--:|  
+| ![GUI Example 1](Example_Data/GUI_Example_1.png) | ![GUI Example 2](Example_Data/GUI_Example_2.png) |  
+
+| Example 3 | Example 4 |  
+|:--:|:--:|  
+| ![GUI Example 3](Example_Data/GUI_Example_3.png) | ![GUI Example 4](Example_Data/GUI_Example_4.png) |  
+
+
+## Dependencies
+
+The following Python packages are required (installed via `requirements.txt`):
+- `pandas`
+- `pyexcel_ods3`
+- `numpy`
+- `matplotlib`
+- `tkinter`
+
+## Notes
+- **This application does NOT support MeteoGalicia's new 2025 CSV format.** If you encounter issues, try using older data files.
+- If using the standalone executable, ensure the **`_internal` folder is in the same directory**.
+- The graphs provide insights into **historical weather trends** but may require additional preprocessing for compatibility with future data formats.
+
+## Author  
+
+This project was developed by **[Marcos Sanson](https://github.com/Marcos-Sanson)** during a **[Grand Valley State University Summer 2023 Faculty-Led Study Abroad Program in Ourense, Spain](https://www.gvsu.edu/studyabroad/faculty-led-programs-2246.htm)**
+
+For more projects and updates, visit my GitHub: **[Marcos Sanson](https://github.com/Marcos-Sanson)**

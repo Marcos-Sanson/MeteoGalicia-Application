@@ -1,0 +1,19 @@
+# MeteoGalicia Application Requirements
+# Author: Marcos Sanson
+# Last updated: March 5, 2025
+
+# Core data processing and visualization libraries
+pandas
+pyexcel_ods3
+numpy
+matplotlib
+tk
+
+# Spreadsheet file handling
+pyexcel_ods3
+
+# Python standard libraries (included by default in Python installation):
+# - tkinter
+# - calendar
+# - locale
+# - webbrowser

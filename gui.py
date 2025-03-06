@@ -1,27 +1,43 @@
 """
 Author: Marcos Sanson
-Date: May 29, 2023 - November 18, 2023
-Project Title: PROYECTO DE INFORMACIÓN METEOROLÓGICA
+Original dates of work: May 29, 2023 - November 18, 2023
+Last updated: March 5, 2025
+Project Title: PROYECTO DE INFORMACIÓN METEOROLÓGICA (METEOROLOGICAL INFORMATION PROJECT)
 
 Overview:
-This application enables users to process meteorological data and generate graphs
-from selected CSV and ODS files. It includes features for toggling dark mode,
-switching between English and Spanish, file browsing, ODS file creation, and graph
-generation for a specific year.
+This application allows users to process MeteoGalicia meteorological data and generate graphs from selected CSV and ODS files. 
+It includes features for toggling dark mode, switching between English and Spanish, file browsing, ODS file creation, and 
+graph generation for a specific year.
+
+Recent Changes:
+As of 2025, MeteoGalicia has updated their website and changed their CSV data format. Currently, this application 
+does not work with the new CSV output from their website. However, older data files are still compatible and will 
+function correctly.
+
+Usage Options:
+1. Run the Executable: An easy-to-use executable file (Aplicación - Proyecto de Información Meteorológica.exe) is 
+   available. Simply run it, but make sure that the _internal folder is in the same directory. This folder is 
+   included in the GitHub repository.
+2. Run the Python Script: Alternatively, you can run this Python script (gui.py) directly. See further instructions below.
+
+Instructions:
+To run the script manually, make sure the required dependencies are installed.
+
+1. Install dependencies using the provided `requirements.txt` file:
+   pip install -r requirements.txt
+
+2. If running the script manually (without the GUI), replace the 'input_file_path' and 'output_file_path' variables in the example usage section.
+
+3. Run the script using Python:
+   python script.py
 
 Dependencies:
 - pandas
 - pyexcel_ods3
 - numpy
 - matplotlib
-
-Usage:
-1. Replace the input_file_path and output_file_path variables in the example usage section.
-2. Run the script.
-
-Note: Ensure that the required dependencies are installed before running the script.
+- tkinter
 """
-
 
 import tkinter as tk
 from tkinter import filedialog, ttk
@@ -32,7 +48,6 @@ import pyexcel_ods3 as ods
 import numpy as np
 import matplotlib.pyplot as plt
 import webbrowser
-
 
 def reorganize_ods(input_file, output_file):
     """
@@ -112,7 +127,6 @@ def reorganize_ods(input_file, output_file):
           f"Output file: {output_file}\n")
 
     return df_reorganized
-
 
 def create_graph(input_file_path, output_file_path, year):
     """
@@ -197,7 +211,6 @@ def create_graph(input_file_path, output_file_path, year):
         print(f"Error: {e}")
         print("Please select a valid year present in the data.")
 
-
 LIGHT_STYLE = {
     "bg": "white",
     "fg": "black",
@@ -214,13 +227,12 @@ DARK_STYLE = {
 
 DEFAULT_BG_COLOR = "white"
 
-
 def toggle_style(dark_mode):
     """
     Toggle the GUI style between dark mode and light mode.
 
     This function adjusts the Tkinter root window's palette to switch between dark mode and light mode.
-    It sets background colors and other style attributes based on the provided `dark_mode` flag.
+    It sets background colors and other style attributes based on the provided 'dark_mode' flag.
 
     Args:
         dark_mode (bool): A boolean flag indicating whether dark mode should be enabled.
@@ -230,7 +242,6 @@ def toggle_style(dark_mode):
     """
     style = DARK_STYLE if dark_mode else LIGHT_STYLE
     root.tk_setPalette(background=style.get("bg", DEFAULT_BG_COLOR), **style)
-
 
 class MeteorologicalApp:
     """
@@ -441,7 +452,7 @@ class MeteorologicalApp:
         self.message_label = tk.Label(master, text="", fg="green", font=("Helvetica", 14))
         self.message_label.pack(side='left', anchor='sw', padx=10, pady=10)
 
-        self.output_ods_file = None  # Add this line to initialize the variable
+        self.output_ods_file = None  # Initialize the variable
 
         # Hide the unnecessary output file selection section
         self.label_output.pack_forget()  # Hide the label
@@ -679,10 +690,8 @@ class MeteorologicalApp:
 # Create the main application window
 root = tk.Tk()
 
-
 # Create an instance of the MeteorologicalApp class
 app = MeteorologicalApp(root)
-
 
 # Start the Tkinter event loop
 root.mainloop()

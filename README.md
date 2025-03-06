@@ -1,5 +1,7 @@
 # MeteoGalicia-Application
 
+### [README Version in Spanish/Castilian (versión en español/castellano)](./README-es.md)
+
 ## Overview
 
 This application processes meteorological data (from 2007 to present) from [MeteoGalicia](https://www.meteogalicia.gal/web/observacion/rede-meteoroloxica/historico), a regional meteorological agency in Galicia, Spain. MeteoGalicia provides weather forecasts, climate data, and environmental monitoring for the region. It also offers historical records of various meteorological variables such as temperature, precipitation, solar radiation, and wind speed.
